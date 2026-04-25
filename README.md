@@ -94,6 +94,34 @@ O que esse comando faz:
 - `Invoke-WebRequest ...` — baixa o script de instalação do repositório oficial do pyenv-win
 - `&"./install-pyenv-win.ps1"` — executa o script que acabou de ser baixado
 
+
+<details>
+  <summary>Caso surja uma falha na instalação, expanda aqui.</summary>
+Em algumas versões do windows existe um bloqueio para execução de scripts externos, retornado uma mensagem como essa: 
+
+```
+& : O arquivo install-pyenv-win.ps1 não pode ser carregado porque a execução de scripts foi
+desabilitada neste sistema. Para obter mais informações, consulte about_Execution_Policies em
+https://go.microsoft.com/fwlink/?LinkID=135170.
+No linha:2 caractere:173
++ ... n.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
++                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ErrodeSegurança: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+```
+Para resolver o problema, basta executar antes de tudo o comando abaixo: 
+
+`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
+
+Basicamente, esse comando realiza as seguintes alterações: 
+
+- `RemoteSigned`: Adiciona permissão para que scripts criados localmente sejam executados e exige que scripts baixados da internet sejam assinados por um editor confiável.
+
+- `Scope Process`: Aplica essa mudança apenas à janela atual do PowerShell. Assim que você fechá-la, a segurança volta ao normal, o que é mais seguro para o seu computador.
+</details>
+
+
+
 Depois da instalação, **feche o PowerShell** e abra o VSCode. A partir daqui, tudo será feito no terminal do VSCode.
 
 > O terminal novo reconhece as alterações de instalação. Trabalhar em um terminal antigo pode fazer o `pyenv` não ser encontrado.
